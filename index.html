@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Mi Amor</title>
+  <style>
+    :root {
+      --primary: #ff4d6d;
+      --secondary: #ff758f;
+      --bg: #fff0f3;
+      --text: #590d22;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      text-align: center;
+      padding: 20px;
+    }
+    header { margin-top: 20px; }
+    h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+    p { font-size: 1.1rem; }
+    
+    .timer-container {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 20px auto;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .timer {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+    .timer-box {
+      display: flex;
+      flex-direction: column;
+    }
+    .timer-box span:first-child {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .section {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      margin: 25px auto;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 10px;
+    }
+    .btn:hover { background-color: var(--secondary); }
+
+    .no-btn-container {
+      position: relative;
+      height: 100px;
+    }
+    #noBtn {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .letter {
+      display: none;
+      text-align: left;
+      line-height: 1.6;
+      margin-top: 15px;
+      background: #fff8f9;
+      padding: 15px;
+      border-left: 4px solid var(--primary);
+      border-radius: 5px;
+    }
+
+    .ring-container {
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .ring {
+      font-size: 4rem;
+      display: inline-block;
+      transition: transform 0.5s ease;
+    }
+    .ring:hover {
+      transform: scale(1.2) rotate(15deg);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Nuestra Historia Sinfín ❤️</h1>
+    <p>Un pequeño rincón dedicado solo para nosotros.</p>
+  </header>
+
+  <!-- Contador Real -->
+  <div class="timer-container">
+    <h3>Llevamos juntos:</h3>
+    <div class="timer" id="timer">
+      <div class="timer-box"><span id="days">0</span><span>Días</span></div>
+      <div class="timer-box"><span id="hours">0</span><span>Horas</span></div>
+      <div class="timer-box"><span id="minutes">0</span><span>Minutos</span></div>
+      <div class="timer-box"><span id="seconds">0</span><span>Segundos</span></div>
+    </div>
+  </div>
+
+  <!-- Botón Interactivo / Pregunta -->
+  <div class="section">
+    <h3>¿Quieres seguir escribiendo esta historia juntos?</h3>
+    <div class="no-btn-container">
+      <button class="btn" onclick="celebrate()">¡Sí, siempre!</button>
+      <button class="btn" id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+    </div>
+  </div>
+
+  <!-- Carta de Amor -->
+  <div class="section">
+    <h3>Una pequeña nota para ti ✉️</h3>
+    <button class="btn" onclick="toggleLetter()">Leer la carta</button>
+    <div class="letter" id="loveLetter">
+      <p>Hola mi amor,</p><br>
+      <p>Creé este espacio simplemente para recordarte lo mucho que significas para mí. Cada segundo a tu lado cuenta y esta página es un pequeño reflejo de todo lo bonito que construimos día a día.</p><br>
+      <p>Gracias por estar siempre a mi lado. Te amo infinitamente.</p>
+    </div>
+  </div>
+
+  <!-- Sorpresa / Anillo -->
+  <div class="section">
+    <h3>Próximamente... ✨</h3>
+    <div class="ring-container" onclick="ringSurprise()">
+      <div class="ring" id="ringEmoji">💍</div>
+      <p id="ringText">Toca el anillo para descubrir algo especial</p>
+    </div>
+  </div>
+
+  <script>
+    // Configurar la fecha de inicio de la relación
+    const startDate = new Date(2023, 0, 1); 
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerText = days;
+      document.getElementById('hours').innerText = hours;
+      document.getElementById('minutes').innerText = minutes;
+      document.getElementById('seconds').innerText = seconds;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    function moveNoButton() {
+      const btn = document.getElementById('noBtn');
+      const x = Math.random() * (window.innerWidth - 100) - (window.innerWidth / 2 - 50);
+      const y = Math.random() * 80 - 40;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    function celebrate() {
+      alert("¡Sabía que dirías que sí! ❤️ Te amo.");
+    }
+
+    function toggleLetter() {
+      const letter = document.getElementById('loveLetter');
+      letter.style.display = letter.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function ringSurprise() {
+      const ringText = document.getElementById('ringText');
+      ringText.innerText = "¡El futuro juntos tiene las mejores sorpresas guardadas! ✨❤️";
+    }
+  </script>
+</body>
+</html>
