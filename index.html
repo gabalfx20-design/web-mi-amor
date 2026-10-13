@@ -332,4 +332,259 @@
     <button onclick="showTab('tab-proposal', this)">💍 Nuestra Pregunta</button>
     <button onclick="showTab('tab-quiz', this)">🧩 Quiz y Vales</button>
     <button onclick="showTab('tab-photos', this)">📸 Mini Book</button>
-    <button onclick="
+    <button onclick="showTab('tab-envelope', this)">✉️ Carta Sobre</button>
+  </nav>
+
+  <!-- Pestaña 1: Inicio / Contador -->
+  <div id="tab-home" class="tab-content active">
+    <div class="card">
+      <h1>Nuestra Historia Especial ❤️</h1>
+      <p>Un rincón interactivo dedicado exclusivamente a nosotros.</p>
+    </div>
+    <div class="card">
+      <h2>Esta página lleva creada:</h2>
+      <div class="timer">
+        <div class="timer-box"><span id="days">0</span><span>Días</span></div>
+        <div class="timer-box"><span id="hours">0</span><span>Horas</span></div>
+        <div class="timer-box"><span id="minutes">0</span><span>Minutos</span></div>
+        <div class="timer-box"><span id="seconds">0</span><span>Segundos</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 2: Cosas que me encantan de ti -->
+  <div id="tab-reasons" class="tab-content">
+    <div class="card">
+      <h2>Cosas Que Me Encantan De Ti ✨</h2>
+      <p style="color: #666; font-size: 0.95rem;">Pulsa el botón para descubrir un detalle único:</p>
+      
+      <div class="heart-icon">❤️</div>
+      
+      <div class="reason-box" id="reasonText">
+        Haz clic abajo para descubrir algo que me vuelve loco de ti ✨
+      </div>
+
+      <button class="btn-reason" onclick="getNewReason()">✨ Descubrir una cosa más</button>
+    </div>
+  </div>
+
+  <!-- Pestaña 3: Pregunta Especial con Botón Movible -->
+  <div id="tab-proposal" class="tab-content">
+    <div class="card">
+      <h2>Pregunta Importante 💖</h2>
+      <p style="font-size: 1.2rem; margin: 20px 0;">¿Quieres estar toda la vida conmigo?</p>
+      
+      <div class="btn-container">
+        <button class="btn-yes" onclick="celebrateForever()">¡SÍ, QUIERO! ❤️</button>
+        <button class="btn-no" id="movingNoBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 4: Quiz & Vales -->
+  <div id="tab-quiz" class="tab-content">
+    <div class="card">
+      <h2>Responde para Desbloquear Vales 🎟️</h2>
+      <p style="margin-bottom: 20px; font-size: 0.95rem; color: #666;">Selecciona la respuesta correcta en cada pregunta para conseguir tus premios.</p>
+
+      <!-- Pregunta 1 -->
+      <div class="quiz-card">
+        <p><strong>1. ¿Cuál es mi parte favorita de tu cuerpo?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">A) El pie 👣</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tu cara y tu sonrisa 😊</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', true)">C) Todo de ti 💖</button>
+      </div>
+
+      <!-- Pregunta 2 -->
+      <div class="quiz-card">
+        <p><strong>2. ¿Quién quiere más a quién?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">A) Yo a ti sin duda</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tú a mí más</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">C) Los dosh por igual ❤️</button>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="quiz-card">
+        <p><strong>3. ¿Qué tipo de hada eres?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">A) El hada del agua 💧</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">B) La veloz / veloz e ingeniosa ⚡</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">C) Hada Tintineadora (Campanilla) ✨</button>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="quiz-card">
+        <p><strong>4. ¿Cuál es nuestro plan perfecto?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher3', true)">A) Todos los planes son muy top mientras estemos juntos ✨</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher3', false)">B) Salir de fiesta hasta las 7 de la mañana 🕺</button>
+      </div>
+
+      <!-- Vales desbloqueados -->
+      <div id="vouchers-container" style="margin-top: 25px;">
+        <div id="voucher1" class="voucher">
+          <h3>🎟️ VALE 1: Cena de Sopita Reconfortante</h3>
+          <p>Canjeable por una noche de sopita caliente hecha con amor 🥣✨</p>
+        </div>
+        <div id="voucher2" class="voucher">
+          <h3>🎟️ VALE 2: Un Brownie Delicioso</h3>
+          <p>Válido para disfrutar de tu brownie favorito cuando más te apetezca 🍫😋</p>
+        </div>
+        <div id="voucher3" class="voucher">
+          <h3>🎟️ VALE 3: Masajito en los Pies</h3>
+          <p>Canjeable por un masajito relajante de pies con mimos ilimitados 👣💆‍♀️❤️</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 5: Mini Book de Fotos -->
+  <div id="tab-photos" class="tab-content">
+    <div class="card">
+      <h2>Nuestro Mini Book 📸</h2>
+      <div class="photo-grid">
+        <div class="photo-card">
+          <img src="Foto1.jpeg" alt="Foto 1">
+        </div>
+        <div class="photo-card">
+          <img src="Foto2.jpeg" alt="Foto 2">
+        </div>
+        <div class="photo-card">
+          <img src="Foto3.jpeg" alt="Foto 3">
+        </div>
+        <div class="photo-card">
+          <img src="Foto4.jpeg" alt="Foto 4">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 6: Sobre de Carta Oculta -->
+  <div id="tab-envelope" class="tab-content">
+    <div class="card">
+      <h2>Un mensaje especial para ti ✉️</h2>
+      <p>Toca el sobre para abrirlo y descubrir tu carta:</p>
+      
+      <div class="envelope-container" id="envelopeCard" onclick="toggleEnvelope()">
+        <div class="envelope-base"></div>
+        <div class="letter-paper">
+          <h3 style="color: var(--primary); margin-bottom: 6px;">Mi Amor,</h3>
+          <p style="font-weight: bold; font-size: 1.15rem; color: #333;">Te amo hasta la luna 🌙✨</p>
+        </div>
+        <div class="envelope-pocket"></div>
+        <div class="envelope-flap"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cambio de pestañas
+    function showTab(tabId, buttonElement) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      buttonElement.classList.add('active');
+    }
+
+    // Contador desde la fecha de creación (13 Octubre 2026)
+    const startDate = new Date(2026, 9, 13, 17, 30, 0);
+
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(Math.max(0, diff) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((Math.max(0, diff) / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((Math.max(0, diff) / 1000 / 60) % 60);
+      const seconds = Math.floor((Math.max(0, diff) / 1000) % 60);
+
+      document.getElementById('days').innerText = days;
+      document.getElementById('hours').innerText = hours;
+      document.getElementById('minutes').innerText = minutes;
+      document.getElementById('seconds').innerText = seconds;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // Cosas que me encantan de ti
+    const reasons = [
+      "Tu sonrisa 😊",
+      "Tu culazo 😏",
+      "Tus ojos 👀",
+      "Tus calcetines divertidos 🧦",
+      "Tu acento 🗣️",
+      "Tu mano izquierda 🤝",
+      "Tu forma de ser ❤️",
+      "Tus bolis chulos 🖊️",
+      "Lo tintineadora que eres ✨",
+      "Lo ricas que te salen las hamburguesas 🍔",
+      "Lo bien que aparcas 🚗💨",
+      "Lo trabajadora que eres 💪",
+      "Tus pequitas ✨",
+      "Lo preciosa que eres 💖"
+    ];
+
+    let lastIndex = -1;
+
+    function getNewReason() {
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * reasons.length);
+      } while (randomIndex === lastIndex && reasons.length > 1);
+      
+      lastIndex = randomIndex;
+
+      const reasonBox = document.getElementById('reasonText');
+      reasonBox.style.opacity = 0;
+      
+      setTimeout(() => {
+        reasonBox.innerText = reasons[randomIndex];
+        reasonBox.style.opacity = 1;
+      }, 200);
+
+      confetti({
+        particleCount: 35,
+        spread: 50,
+        origin: { y: 0.6 }
+      });
+    }
+
+    // Movimiento del botón NO
+    function moveNoButton() {
+      const btn = document.getElementById('movingNoBtn');
+      const x = (Math.random() - 0.5) * 240;
+      const y = (Math.random() - 0.5) * 120;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // Celebración con confeti al decir SÍ
+    function celebrateForever() {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+      alert("¡Sabía que dirías que sí! ❤️ ¡Juntos para siempre!");
+    }
+
+    // Desbloquear Vales del Quiz con Confeti
+    function unlockVoucher(voucherId, isCorrect) {
+      if (isCorrect) {
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.7 }
+        });
+        document.getElementById(voucherId).style.display = 'block';
+        alert("¡Respuesta Correcta! 🎉 Has desbloqueado un nuevo vale regalo 🎟️✨");
+      } else {
+        alert("¡Casi! Inténtalo con otra respuesta 😉");
+      }
+    }
+
+    // Sobre interactivo
+    function toggleEnvelope() {
+      document.getElementById('envelopeCard').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
