@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Para Mi Amor ❤️</title>
+  <!-- Librería de Confeti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --primary: #e63946;
       --secondary: #ffb703;
-      --bg: #fff5f6;
+      --bg: #fff0f3;
       --card-bg: #ffffff;
       --text: #2b2d42;
       --accent: #ff758f;
@@ -19,6 +21,9 @@
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
+      background-image: radial-gradient(#ffb3c1 0.8px, transparent 0.8px), radial-gradient(#ffb3c1 0.8px, var(--bg) 0.8px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
       color: var(--text);
       text-align: center;
       padding-bottom: 50px;
@@ -32,7 +37,7 @@
       backdrop-filter: blur(8px);
       display: flex;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       padding: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       z-index: 100;
@@ -42,9 +47,10 @@
     nav button {
       background: none;
       border: 2px solid transparent;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 20px;
       font-weight: 600;
+      font-size: 0.9rem;
       color: var(--text);
       cursor: pointer;
       transition: all 0.3s;
@@ -75,7 +81,7 @@
       background: var(--card-bg);
       border-radius: 20px;
       padding: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
       margin-bottom: 25px;
       position: relative;
     }
@@ -98,6 +104,53 @@
       font-size: 2rem;
       font-weight: bold;
       color: var(--primary);
+    }
+
+    /* Cosas que me encantan de ti */
+    .heart-icon {
+      font-size: 3.5rem;
+      animation: pulse 1.5s infinite;
+      margin: 15px 0;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    .reason-box {
+      background: #fff8f9;
+      border: 2px dashed var(--accent);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .btn-reason {
+      background: linear-gradient(135deg, #ff758f, #e63946);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(230, 57, 70, 0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-reason:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(230, 57, 70, 0.35);
     }
 
     /* Quiz */
@@ -252,6 +305,7 @@
   <!-- Navegación -->
   <nav>
     <button class="active" onclick="showTab('tab-home', this)">⏳ Inicio</button>
+    <button onclick="showTab('tab-reasons', this)">✨ Me Encanta de Ti</button>
     <button onclick="showTab('tab-proposal', this)">💍 Nuestra Pregunta</button>
     <button onclick="showTab('tab-quiz', this)">🧩 Quiz y Vales</button>
     <button onclick="showTab('tab-photos', this)">📸 Mini Book</button>
@@ -275,7 +329,23 @@
     </div>
   </div>
 
-  <!-- Pestaña 2: Pregunta Especial con Botón Movible -->
+  <!-- Pestaña 2: Cosas que me encantan de ti -->
+  <div id="tab-reasons" class="tab-content">
+    <div class="card">
+      <h2>Cosas Que Me Encantan De Ti ✨</h2>
+      <p style="color: #666; font-size: 0.95rem;">Pulsa el botón para descubrir un detalle único:</p>
+      
+      <div class="heart-icon">❤️</div>
+      
+      <div class="reason-box" id="reasonText">
+        Haz clic abajo para descubrir algo que me vuelve loco de ti ✨
+      </div>
+
+      <button class="btn-reason" onclick="getNewReason()">✨ Descubrir una cosa más</button>
+    </div>
+  </div>
+
+  <!-- Pestaña 3: Pregunta Especial con Botón Movible -->
   <div id="tab-proposal" class="tab-content">
     <div class="card">
       <h2>Pregunta Importante 💖</h2>
@@ -288,7 +358,7 @@
     </div>
   </div>
 
-  <!-- Pestaña 3: Quiz & Vales -->
+  <!-- Pestaña 4: Quiz & Vales -->
   <div id="tab-quiz" class="tab-content">
     <div class="card">
       <h2>Responde para Desbloquear Vales 🎟️</h2>
@@ -297,55 +367,74 @@
       <!-- Pregunta 1 -->
       <div class="quiz-card">
         <p><strong>1. ¿Cuál es mi parte favorita de tu cuerpo?</strong></p>
-        <button class="quiz-option" onclick="unlockVoucher('voucher1', true)">A) El pie 👣</button>
-        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tus ojos</button>
-        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">C) Tu sonrisa</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">A) El pie 👣</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tu cara y tu sonrisa 😊</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', true)">C) Todo de ti 💖</button>
       </div>
 
       <!-- Pregunta 2 -->
       <div class="quiz-card">
-        <p><strong>2. ¿Cuál es nuestro plan estrella indiscutible?</strong></p>
-        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">A) Panta, manta, serie/peli y cenita rica 🍿</button>
-        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">B) Salir de fiesta hasta las 7 de la mañana 🕺</button>
-        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">C) Irnos a hacer puentismo 🪂</button>
+        <p><strong>2. ¿Quién quiere más a quién?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">A) Yo a ti sin duda</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tú a mí más</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">C) Los dos por igual ❤️</button>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="quiz-card">
+        <p><strong>3. ¿Qué tipo de hada eres?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">A) El hada del agua 💧</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">B) La veloz / veloz e ingeniosa ⚡</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">C) Hada Tintineadora (Campanilla) ✨</button>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="quiz-card">
+        <p><strong>4. ¿Cuál es nuestro plan perfecto?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher3', true)">A) Todos los planes son muy top mientras estemos juntos ✨</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher3', false)">B) Salir de fiesta hasta las 7 de la mañana 🕺</button>
       </div>
 
       <!-- Vales desbloqueados -->
       <div id="vouchers-container" style="margin-top: 25px;">
         <div id="voucher1" class="voucher">
-          <h3>🎟️ VALE 1: Cena Especial</h3>
-          <p>Canjeable cuando tú quieras. ¡Elegimos el sitio y disfrutamos!</p>
+          <h3>🎟️ VALE 1: Cena de Sopita Reconfortante</h3>
+          <p>Canjeable por una noche de sopita caliente hecha con amor 🥣✨</p>
         </div>
         <div id="voucher2" class="voucher">
-          <h3>🎟️ VALE 2: Sesión de Mimos y Película</h3>
-          <p>Válido para elegir peli, tus chuches favoritas y masajito garantizado.</p>
+          <h3>🎟️ VALE 2: Un Brownie Delicioso</h3>
+          <p>Válido para disfrutar de tu brownie favorito cuando más te apetezca 🍫😋</p>
+        </div>
+        <div id="voucher3" class="voucher">
+          <h3>🎟️ VALE 3: Masajito en los Pies</h3>
+          <p>Canjeable por un masajito relajante de pies con mimos ilimitados 👣💆‍♀️❤️</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Pestaña 4: Mini Book de Fotos -->
+  <!-- Pestaña 5: Mini Book de Fotos -->
   <div id="tab-photos" class="tab-content">
     <div class="card">
       <h2>Nuestro Mini Book 📸</h2>
-      <div class="photo-grid">
+      <div class="photo-grid" id="photoGrid">
         <div class="photo-card">
-          <img src="https://i.ibb.co/Y4yvmg2f/image.jpg" alt="Foto 1">
+          <img src="foto1.jpg" alt="Foto 1">
         </div>
         <div class="photo-card">
-          <img src="https://i.ibb.co/4RnXMJ4V/image.jpg" alt="Foto 2">
+          <img src="foto2.jpg" alt="Foto 2">
         </div>
         <div class="photo-card">
-          <img src="https://i.ibb.co/S4GxP5rd/image.jpg" alt="Foto 3">
+          <img src="foto3.jpg" alt="Foto 3">
         </div>
         <div class="photo-card">
-          <img src="https://i.ibb.co/TD1rY4FB/image.jpg" alt="Foto 4">
+          <img src="foto4.jpg" alt="Foto 4">
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Pestaña 5: Sobre de Carta -->
+  <!-- Pestaña 6: Sobre de Carta -->
   <div id="tab-envelope" class="tab-content">
     <div class="card">
       <h2>Un mensaje especial para ti ✉️</h2>
@@ -390,6 +479,49 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
+    // Cosas que me encantan de ti
+    const reasons = [
+      "Tu sonrisa 😊",
+      "Tu culazo 😏",
+      "Tus ojos 👀",
+      "Tus calcetines divertidos 🧦",
+      "Tu acento 🗣️",
+      "Tu mano izquierda 🤝",
+      "Tu forma de ser ❤️",
+      "Tus bolis chulos 🖊️",
+      "Lo tintineadora que eres ✨",
+      "Lo ricas que te salen las hamburguesas 🍔",
+      "Lo bien que aparcas 🚗💨",
+      "Lo trabajadora que eres 💪",
+      "Tus pequitas ✨",
+      "Lo preciosa que eres 💖"
+    ];
+
+    let lastIndex = -1;
+
+    function getNewReason() {
+      let randomIndex;
+      do {
+        randomIndex = Math.floor(Math.random() * reasons.length);
+      } while (randomIndex === lastIndex && reasons.length > 1);
+      
+      lastIndex = randomIndex;
+
+      const reasonBox = document.getElementById('reasonText');
+      reasonBox.style.opacity = 0;
+      
+      setTimeout(() => {
+        reasonBox.innerText = reasons[randomIndex];
+        reasonBox.style.opacity = 1;
+      }, 200);
+
+      confetti({
+        particleCount: 35,
+        spread: 50,
+        origin: { y: 0.6 }
+      });
+    }
+
     // Movimiento del botón NO
     function moveNoButton() {
       const btn = document.getElementById('movingNoBtn');
@@ -398,17 +530,28 @@
       btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
+    // Celebración con confeti al decir SÍ
     function celebrateForever() {
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
       alert("¡Sabía que dirías que sí! ❤️ ¡Juntos para siempre!");
     }
 
-    // Desbloquear Vales del Quiz
+    // Desbloquear Vales del Quiz con Confeti
     function unlockVoucher(voucherId, isCorrect) {
       if (isCorrect) {
+        confetti({
+          particleCount: 70,
+          spread: 60,
+          origin: { y: 0.7 }
+        });
         document.getElementById(voucherId).style.display = 'block';
-        alert("¡Respuesta Correcta! Has desbloqueado un nuevo vale regalo 🎟️✨");
+        alert("¡Respuesta Correcta! 🎉 Has desbloqueado un nuevo vale regalo 🎟️✨");
       } else {
-        alert("¡Casi! Prueba con otra opción 😉");
+        alert("¡Casi! Inténtalo con otra respuesta 😉");
       }
     }
 
