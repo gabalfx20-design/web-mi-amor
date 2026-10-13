@@ -3,165 +3,384 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Para Mi Amor</title>
+  <title>Para Mi Amor ❤️</title>
   <style>
     :root {
-      --primary: #ff4d6d;
-      --secondary: #ff758f;
-      --bg: #fff0f3;
-      --text: #590d22;
+      --primary: #e63946;
+      --secondary: #ffb703;
+      --bg: #fff5f6;
+      --card-bg: #ffffff;
+      --text: #2b2d42;
+      --accent: #ff758f;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       text-align: center;
-      padding: 20px;
+      padding-bottom: 50px;
     }
-    header { margin-top: 20px; }
-    h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
-    p { font-size: 1.1rem; }
-    
-    .timer-container {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      margin: 20px auto;
-      max-width: 500px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+    /* Navegación por pestañas */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      z-index: 100;
+      flex-wrap: wrap;
     }
+
+    nav button {
+      background: none;
+      border: 2px solid transparent;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    nav button.active, nav button:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+      max-width: 650px;
+      margin: 30px auto;
+      padding: 20px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Tarjetas */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 10px; }
+    h2 { color: var(--primary); font-size: 1.6rem; margin-bottom: 15px; }
+
+    /* Contador */
     .timer {
       display: flex;
       justify-content: space-around;
-      margin-top: 15px;
+      margin-top: 20px;
     }
     .timer-box {
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .timer-box span:first-child {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: bold;
       color: var(--primary);
     }
 
-    .section {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      margin: 25px auto;
-      max-width: 500px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    /* Quiz */
+    .quiz-card {
+      text-align: left;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff8f9;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
     }
 
-    .btn {
-      background-color: var(--primary);
+    .quiz-option {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      text-align: left;
+      transition: 0.3s;
+    }
+
+    .quiz-option:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* Vales Regalo */
+    .voucher {
+      background: linear-gradient(135deg, #ff758f, #ff4d6d);
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin: 15px 0;
+      border: 2px dashed white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    /* Sección Botón Escurridizo */
+    .btn-container {
+      position: relative;
+      min-height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-yes {
+      background-color: #2ec4b6;
       color: white;
       border: none;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 25px;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
-      margin: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .btn:hover { background-color: var(--secondary); }
 
-    .no-btn-container {
-      position: relative;
-      height: 100px;
-    }
-    #noBtn {
+    .btn-no {
+      background-color: #e63946;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .letter {
-      display: none;
-      text-align: left;
-      line-height: 1.6;
+    /* Album de Fotos */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
       margin-top: 15px;
-      background: #fff8f9;
-      padding: 15px;
-      border-left: 4px solid var(--primary);
-      border-radius: 5px;
+    }
+    .photo-card {
+      background: white;
+      padding: 10px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .photo-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
     }
 
-    .ring-container {
-      margin-top: 20px;
+    /* Sobre Interactivo */
+    .envelope-wrapper {
+      position: relative;
       cursor: pointer;
+      margin: 50px auto 20px;
+      width: 280px;
+      height: 180px;
+      background: #f28482;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
-    .ring {
-      font-size: 4rem;
-      display: inline-block;
-      transition: transform 0.5s ease;
+
+    .envelope-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-left: 140px solid #f6bd60;
+      border-right: 140px solid #f6bd60;
+      border-bottom: 90px solid transparent;
+      border-top: 90px solid transparent;
+      transform-origin: top;
+      transition: transform 0.6s ease;
+      z-index: 3;
     }
-    .ring:hover {
-      transform: scale(1.2) rotate(15deg);
+
+    .letter-inside {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      right: 15px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      transition: all 0.6s ease;
+      z-index: 2;
+    }
+
+    .envelope-wrapper.open::before {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-wrapper.open .letter-inside {
+      transform: translateY(-90px);
+      z-index: 4;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>Nuestra Historia Sinfín ❤️</h1>
-    <p>Un pequeño rincón dedicado solo para nosotros.</p>
-  </header>
+  <!-- Navegación -->
+  <nav>
+    <button class="active" onclick="showTab('tab-home', this)">⏳ Inicio</button>
+    <button onclick="showTab('tab-proposal', this)">💍 Nuestra Pregunta</button>
+    <button onclick="showTab('tab-quiz', this)">🧩 Quiz y Vales</button>
+    <button onclick="showTab('tab-photos', this)">📸 Mini Book</button>
+    <button onclick="showTab('tab-envelope', this)">✉️ Carta Sobre</button>
+  </nav>
 
-  <!-- Contador Real -->
-  <div class="timer-container">
-    <h3>Llevamos juntos:</h3>
-    <div class="timer" id="timer">
-      <div class="timer-box"><span id="days">0</span><span>Días</span></div>
-      <div class="timer-box"><span id="hours">0</span><span>Horas</span></div>
-      <div class="timer-box"><span id="minutes">0</span><span>Minutos</span></div>
-      <div class="timer-box"><span id="seconds">0</span><span>Segundos</span></div>
+  <!-- Pestaña 1: Inicio / Contador -->
+  <div id="tab-home" class="tab-content active">
+    <div class="card">
+      <h1>Nuestra Historia Especial ❤️</h1>
+      <p>Un rincón interactivo dedicado exclusivamente a nosotros.</p>
+    </div>
+    <div class="card">
+      <h2>Esta página lleva creada:</h2>
+      <div class="timer">
+        <div class="timer-box"><span id="days">0</span><span>Días</span></div>
+        <div class="timer-box"><span id="hours">0</span><span>Horas</span></div>
+        <div class="timer-box"><span id="minutes">0</span><span>Minutos</span></div>
+        <div class="timer-box"><span id="seconds">0</span><span>Segundos</span></div>
+      </div>
     </div>
   </div>
 
-  <!-- Botón Interactivo / Pregunta -->
-  <div class="section">
-    <h3>¿Quieres seguir escribiendo esta historia juntos?</h3>
-    <div class="no-btn-container">
-      <button class="btn" onclick="celebrate()">¡Sí, siempre!</button>
-      <button class="btn" id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+  <!-- Pestaña 2: Pregunta Especial con Botón Movible -->
+  <div id="tab-proposal" class="tab-content">
+    <div class="card">
+      <h2>Pregunta Importante 💖</h2>
+      <p style="font-size: 1.2rem; margin: 20px 0;">¿Quieres estar toda la vida conmigo?</p>
+      
+      <div class="btn-container">
+        <button class="btn-yes" onclick="celebrateForever()">¡SÍ, QUIERO! ❤️</button>
+        <button class="btn-no" id="movingNoBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+      </div>
     </div>
   </div>
 
-  <!-- Carta de Amor -->
-  <div class="section">
-    <h3>Una pequeña nota para ti ✉️</h3>
-    <button class="btn" onclick="toggleLetter()">Leer la carta</button>
-    <div class="letter" id="loveLetter">
-      <p>Hola mi amor,</p><br>
-      <p>Creé este espacio simplemente para recordarte lo mucho que significas para mí. Cada segundo a tu lado cuenta y esta página es un pequeño reflejo de todo lo bonito que construimos día a día.</p><br>
-      <p>Gracias por estar siempre a mi lado. Te amo infinitamente.</p>
+  <!-- Pestaña 3: Quiz & Vales -->
+  <div id="tab-quiz" class="tab-content">
+    <div class="card">
+      <h2>Responde para Desbloquear Vales 🎟️</h2>
+      <p style="margin-bottom: 20px; font-size: 0.95rem; color: #666;">Selecciona la respuesta correcta en cada pregunta para conseguir tus premios.</p>
+
+      <!-- Pregunta 1 -->
+      <div class="quiz-card">
+        <p><strong>1. ¿Cuál es mi parte favorita de tu cuerpo?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', true)">A) El pie 👣</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">B) Tus ojos</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher1', false)">C) Tu sonrisa</button>
+      </div>
+
+      <!-- Pregunta 2 -->
+      <div class="quiz-card">
+        <p><strong>2. ¿Cuál es nuestro plan estrella indiscutible?</strong></p>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', true)">A) Panta, manta, serie/peli y cenita rica 🍿</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">B) Salir de fiesta hasta las 7 de la mañana 🕺</button>
+        <button class="quiz-option" onclick="unlockVoucher('voucher2', false)">C) Irnos a hacer puentismo 🪂</button>
+      </div>
+
+      <!-- Vales desbloqueados -->
+      <div id="vouchers-container" style="margin-top: 25px;">
+        <div id="voucher1" class="voucher">
+          <h3>🎟️ VALE 1: Cena Especial</h3>
+          <p>Canjeable cuando tú quieras. ¡Elegimos el sitio y disfrutamos!</p>
+        </div>
+        <div id="voucher2" class="voucher">
+          <h3>🎟️ VALE 2: Sesión de Mimos y Película</h3>
+          <p>Válido para elegir peli, tus chuches favoritas y masajito garantizado.</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Sorpresa / Anillo -->
-  <div class="section">
-    <h3>Próximamente... ✨</h3>
-    <div class="ring-container" onclick="ringSurprise()">
-      <div class="ring" id="ringEmoji">💍</div>
-      <p id="ringText">Toca el anillo para descubrir algo especial</p>
+  <!-- Pestaña 4: Mini Book de Fotos -->
+  <div id="tab-photos" class="tab-content">
+    <div class="card">
+      <h2>Nuestro Mini Book 📸</h2>
+      <div class="photo-grid">
+        <div class="photo-card">
+          <img src="https://i.ibb.co/Y4yvmg2f/image.jpg" alt="Foto 1">
+        </div>
+        <div class="photo-card">
+          <img src="https://i.ibb.co/4RnXMJ4V/image.jpg" alt="Foto 2">
+        </div>
+        <div class="photo-card">
+          <img src="https://i.ibb.co/S4GxP5rd/image.jpg" alt="Foto 3">
+        </div>
+        <div class="photo-card">
+          <img src="https://i.ibb.co/TD1rY4FB/image.jpg" alt="Foto 4">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestaña 5: Sobre de Carta -->
+  <div id="tab-envelope" class="tab-content">
+    <div class="card">
+      <h2>Un mensaje especial para ti ✉️</h2>
+      <p>Toca el sobre para abrirlo:</p>
+      
+      <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+        <div class="letter-inside">
+          <h3 style="color: var(--primary); margin-bottom: 8px;">Mi Amor,</h3>
+          <p style="font-weight: bold; font-size: 1.15rem; color: #333;">Te amo hasta la luna 🌙✨</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // Configurar la fecha de inicio de la relación
-    const startDate = new Date(2023, 0, 1); 
+    // Cambio de pestañas
+    function showTab(tabId, buttonElement) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      buttonElement.classList.add('active');
+    }
+
+    // Contador desde la fecha de creación (13 Octubre 2026)
+    const startDate = new Date(2026, 9, 13, 17, 30, 0);
 
     function updateTimer() {
       const now = new Date();
       const diff = now - startDate;
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+      const days = Math.floor(Math.max(0, diff) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((Math.max(0, diff) / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((Math.max(0, diff) / 1000 / 60) % 60);
+      const seconds = Math.floor((Math.max(0, diff) / 1000) % 60);
 
       document.getElementById('days').innerText = days;
       document.getElementById('hours').innerText = hours;
@@ -171,25 +390,31 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
+    // Movimiento del botón NO
     function moveNoButton() {
-      const btn = document.getElementById('noBtn');
-      const x = Math.random() * (window.innerWidth - 100) - (window.innerWidth / 2 - 50);
-      const y = Math.random() * 80 - 40;
+      const btn = document.getElementById('movingNoBtn');
+      const x = (Math.random() - 0.5) * 240;
+      const y = (Math.random() - 0.5) * 120;
       btn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    function celebrate() {
-      alert("¡Sabía que dirías que sí! ❤️ Te amo.");
+    function celebrateForever() {
+      alert("¡Sabía que dirías que sí! ❤️ ¡Juntos para siempre!");
     }
 
-    function toggleLetter() {
-      const letter = document.getElementById('loveLetter');
-      letter.style.display = letter.style.display === 'block' ? 'none' : 'block';
+    // Desbloquear Vales del Quiz
+    function unlockVoucher(voucherId, isCorrect) {
+      if (isCorrect) {
+        document.getElementById(voucherId).style.display = 'block';
+        alert("¡Respuesta Correcta! Has desbloqueado un nuevo vale regalo 🎟️✨");
+      } else {
+        alert("¡Casi! Prueba con otra opción 😉");
+      }
     }
 
-    function ringSurprise() {
-      const ringText = document.getElementById('ringText');
-      ringText.innerText = "¡El futuro juntos tiene las mejores sorpresas guardadas! ✨❤️";
+    // Sobre interactivo
+    function openEnvelope() {
+      document.getElementById('envelope').classList.toggle('open');
     }
   </script>
 </body>
